@@ -1,8 +1,9 @@
-import argparse
 import logging
 import multiprocessing
 import os
 
+cpus_to_use = int(os.getenv("CPUS", os.cpu_count()))
+numbers_to_process = int(os.getenv("NUMBERS", 100))
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
 
@@ -29,16 +30,8 @@ def get_stopping_time(starting_int):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--numbers", dest="numbers", type=int, required=True,
-    )
-    args = parser.parse_args()
-
-    cpus_to_use = int(os.cpu_count())
-
     logging.info(f"Processing with {cpus_to_use} CPUs...")
     numbers_processed = 0
     with multiprocessing.Pool(processes=cpus_to_use) as pool:
-        for enhanced_ip in pool.imap_unordered(get_stopping_time, range(1, args.numbers+1)):
+        for enhanced_ip in pool.imap_unordered(get_stopping_time, range(1, numbers_to_process)):
             numbers_processed += 1
