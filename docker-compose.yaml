@@ -5,6 +5,3 @@ services:
     environment:
       - NUMBERS=1000
       - CPUS=4
-    command:
-    - python
-    - /app/app.py
